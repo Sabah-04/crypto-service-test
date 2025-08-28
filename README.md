@@ -4,7 +4,8 @@
 
 ## Overview
 REST API for cryptocurrency statistics, daily highest normalized crypto, and sorted normalized ranges.  
-Includes **Swagger/OpenAPI docs** and standardized JSON error handling.
+Includes **Swagger/OpenAPI docs** and standardized JSON error handling.  
+Deployed on Kubernetes via NGINX Ingress at `http://35.226.232.206`.
 
 ---
 
@@ -25,6 +26,14 @@ Includes **Swagger/OpenAPI docs** and standardized JSON error handling.
 
 ---
 
+## Example Requests
+
+### Get Crypto Stats for Bitcoin
+--bash
+curl "http://35.226.232.206/crypto/stats?symbol=BTC"
+
+---
+
 ## Error Handling
 
 - Validation errors return a **field-error map**.
@@ -36,7 +45,7 @@ Includes **Swagger/OpenAPI docs** and standardized JSON error handling.
 
 Access API docs at:
 
-http://localhost:8080/swagger-ui.html
+http://localhost:8080/crypto/api-docs
 
 
 OpenAPI JSON spec:
