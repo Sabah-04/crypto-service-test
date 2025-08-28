@@ -10,8 +10,8 @@ spec:
   rules:
     - http:
         paths:
-          - path: /crypto/*
-            pathType: ImplementationSpecific
+          - path: /crypto
+            pathType: Prefix
             backend:
               service:
                 name: crypto-api-service
