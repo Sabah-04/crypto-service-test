@@ -3,10 +3,10 @@ kind: Ingress
 metadata:
   name: crypto-api-ingress
   annotations:
-    ingress.gcp.kubernetes.io/limit-connections: "10"
-    ingress.gcp.kubernetes.io/limit-rps: "5"
+    nginx.ingress.kubernetes.io/limit-connections: "10"
+    nginx.ingress.kubernetes.io/limit-rps: "5"
 spec:
-  ingressClassName: gce
+  ingressClassName: nginx
   rules:
     - http:
         paths:
