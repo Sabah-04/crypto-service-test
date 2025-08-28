@@ -17,8 +17,8 @@ import java.util.Optional;
 public interface CryptoPriceRepository extends JpaRepository<CryptoPrice, Long> {
 
 
-
-    boolean existsBySymbol(String symbol);
+    @Query("SELECT c.symbol FROM CryptoPrice c")
+    List<String> findAllSymbols();
 
     @Query("SELECT cp.symbol, MIN(cp.price), MAX(cp.price) FROM CryptoPrice cp group by cp.symbol")
     List<CryptoMinMaxDto> findMinMaxPriceForAllCrypto();

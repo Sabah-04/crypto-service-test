@@ -86,7 +86,12 @@ public class CryptoPriceService {
 
 
     public boolean isSupportedCrypto(String symbol) {
-        return cryptoPriceRepository.existsBySymbol(symbol);
+
+        List<String> allSymbols = cryptoPriceRepository.findAllSymbols();
+
+        return allSymbols.stream()
+                .anyMatch(s -> s.equalsIgnoreCase(symbol));
+
     }
 
     public void saveBatch(List<CryptoPrice> batch) {
