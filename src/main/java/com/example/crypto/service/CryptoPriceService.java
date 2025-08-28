@@ -6,6 +6,7 @@ import com.example.crypto.exception.UnsupportedCryptoException;
 import com.example.crypto.model.CryptoPrice;
 import com.example.crypto.repository.CryptoPriceRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -22,9 +23,14 @@ public class CryptoPriceService {
 
     private final CryptoPriceRepository cryptoPriceRepository;
 
+
+    @Cacheable(value = "cryptoStats", key = "#symbol")
     public CryptoStatsDto getCryptoStats(String symbol){
 
+        System.out.println("Calling getCryptoStats");
+
         if (!isSupportedCrypto(symbol)) {
+            System.out.println("Provided crypto symbol for stats does not exist in datasource");
             throw new UnsupportedCryptoException(symbol);
         }
         CryptoMinMaxDto minMax = cryptoPriceRepository.findMinMaxPriceBySymbol(symbol)
@@ -41,8 +47,11 @@ public class CryptoPriceService {
 
     public List<CryptoNormDto> getCryptoSortedByNormRange(){
 
+        System.out.println("Calling getCryptoSortedByNormRange");
+
         List<CryptoMinMaxDto> minMaxPriceList =  cryptoPriceRepository.findMinMaxPriceForAllCrypto();
         if (minMaxPriceList == null || minMaxPriceList.isEmpty()) {
+            System.out.println("No data found for normalization");
             throw new CryptoNotFoundException("No crypto data found.");
         }
         return minMaxPriceList.stream().filter(c -> c.minPrice().compareTo(BigDecimal.ZERO) > 0)
@@ -55,11 +64,14 @@ public class CryptoPriceService {
 
     public CryptoNormDto getHighestCryptoOfDay(LocalDate day){
 
+        System.out.println("Calling getHighestCryptoOfDay");
+
         Long start = day.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
         Long end = day.plusDays(1).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
 
         List<CryptoMinMaxDto> minMaxPriceList = cryptoPriceRepository.findMinMaxPriceByDay(start, end);
         if(minMaxPriceList == null || minMaxPriceList.isEmpty()){
+            System.out.println("No crypto data found for given day");
             throw new CryptoNotFoundException("No crypto data found for the day: " + day);
         }
         Optional<CryptoNormDto> maxDayCrypto = minMaxPriceList.stream().filter(c -> c.minPrice().compareTo(BigDecimal.ZERO) > 0)
@@ -87,7 +99,7 @@ public class CryptoPriceService {
 
     public boolean isSupportedCrypto(String symbol) {
 
-        List<String> allSymbols = cryptoPriceRepository.findAllSymbols();
+        List<String> allSymbols = cryptoPriceRepository.findAllDistinctSymbols();
 
         return allSymbols.stream()
                 .anyMatch(s -> s.equalsIgnoreCase(symbol));

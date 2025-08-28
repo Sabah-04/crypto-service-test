@@ -15,6 +15,7 @@ spec:
       containers:
         - name: crypto-api
           image: gcr.io/canvas-genius-470406-s7/crypto-api:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:

@@ -20,20 +20,20 @@ public class CryptoStatsDto {
 
 
     // Override Lombok getters for clean JSON output
-    public String getMinPrice() {
-        return minPrice != null ? minPrice.stripTrailingZeros().toPlainString() : null;
+    public BigDecimal getMinPrice() {
+        return minPrice.stripTrailingZeros();
     }
 
-    public String getMaxPrice() {
-        return maxPrice != null ? maxPrice.stripTrailingZeros().toPlainString() : null;
+    public BigDecimal getMaxPrice() {
+        return maxPrice.stripTrailingZeros();
     }
 
-    public String getOldestPrice() {
-        return oldestPrice != null ? oldestPrice.stripTrailingZeros().toPlainString() : null;
+    public BigDecimal getOldestPrice() {
+        return oldestPrice.stripTrailingZeros();
     }
 
-    public String getNewestPrice() {
-        return newestPrice != null ? newestPrice.stripTrailingZeros().toPlainString() : null;
+    public BigDecimal getNewestPrice() {
+        return newestPrice.stripTrailingZeros();
     }
 
 }

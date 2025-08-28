@@ -17,8 +17,9 @@ import java.util.Optional;
 public interface CryptoPriceRepository extends JpaRepository<CryptoPrice, Long> {
 
 
-    @Query("SELECT c.symbol FROM CryptoPrice c")
-    List<String> findAllSymbols();
+    @Query("SELECT DISTINCT c.symbol FROM CryptoPrice c")
+    List<String> findAllDistinctSymbols();
+
 
     @Query("SELECT cp.symbol, MIN(cp.price), MAX(cp.price) FROM CryptoPrice cp group by cp.symbol")
     List<CryptoMinMaxDto> findMinMaxPriceForAllCrypto();

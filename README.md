@@ -36,7 +36,7 @@ Includes **Swagger/OpenAPI docs** and standardized JSON error handling.
 
 Access API docs at:
 
-http://localhost:8080/api-docs
+http://localhost:8080/swagger-ui.html
 
 
 OpenAPI JSON spec:

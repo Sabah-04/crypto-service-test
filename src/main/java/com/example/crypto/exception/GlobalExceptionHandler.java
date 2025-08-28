@@ -2,6 +2,7 @@ package com.example.crypto.exception;
 
 
 import com.example.crypto.dto.ErrorResponseDto;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -37,6 +38,11 @@ public class GlobalExceptionHandler {
         ex.getBindingResult().getFieldErrors()
                 .forEach(f -> error.put(f.getField(), f.getDefaultMessage()));
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponseDto> handleValidationException(ConstraintViolationException ex) {
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Validation error: " + ex.getMessage());
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
