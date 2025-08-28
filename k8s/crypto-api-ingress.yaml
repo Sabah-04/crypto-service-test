@@ -10,7 +10,7 @@ spec:
   rules:
     - http:
         paths:
-          - path: /crypto(/|$)(.*)
+          - path: /crypto
             pathType: Prefix
             backend:
               service:
